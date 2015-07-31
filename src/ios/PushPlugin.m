@@ -52,6 +52,16 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
 		UIUserNotificationType UserNotificationTypes = UIUserNotificationTypeNone;
 #endif
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 80000
+    // Check if notification is disabled by user, and call error handler if no notification is enabled
+    UIUserNotificationSettings *currentUserNotificationSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+
+    if (!currentUserNotificationSettings || (currentUserNotificationSettings.types == UIUserNotificationTypeNone)) {
+         [self failWithMessage:@"User disabled all notifications." withError:nil];
+    }
+#endif
+
     UIRemoteNotificationType notificationTypes = UIRemoteNotificationTypeNone;
 
     id badgeArg = [options objectForKey:@"badge"];
